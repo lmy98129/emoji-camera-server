@@ -1,3 +1,5 @@
 .DS_Store
 model/xception/
 model/mobilenetv2/deeplabv3_mnv2_pascal_trainval_2018_01_29.tar.gz
+**/.vscode/
+__pycache__/
