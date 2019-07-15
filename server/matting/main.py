@@ -29,6 +29,7 @@ def segment(seg_map, src_img, bg_img, is_background):
     seg_image = label_to_color_image(seg_map).astype(np.uint8)
     # 只留下标签为人的分割图像
     seg_image = np.where(seg_image!=192,0,192)
+
     height, width, __ = seg_image.shape
     src_height, src_width, ___ = src_img.shape
     # 根据分割图像的大小对现有图像进行调整
@@ -49,21 +50,20 @@ def segment(seg_map, src_img, bg_img, is_background):
     
     nowTime = (int(round(time.time() * 1000)))
 
-    # 转回原大小
-    src_img = cv2.resize(src_img, (src_width, src_height))
+    # # 转回原大小
+    # src_img = cv2.resize(src_img, (src_width, src_height))
     # 转为PIL格式
     src_img = Image.fromarray(cv2.cvtColor(src_img,cv2.COLOR_BGR2RGB))
 
     if is_background == "true":
-        bg_img = cv2.resize(bg_img, (bg_width, bg_height))
+        bg_img = cv2.resize(bg_img, (src_width, src_height))
         bg_img = Image.fromarray(cv2.cvtColor(bg_img,cv2.COLOR_BGR2RGB))
-
-    if is_background == "true":
         res_img_path = "/static/matting-result-{}.jpg".format(nowTime)
         bg_img.save("/server{}".format(res_img_path))
     else:
         res_img_path = "/static/matting-result-{}.png".format(nowTime)
         transparent_img = transparent_back(src_img)
+        transparent_img = transparent_img.resize((src_width, src_height))
         transparent_img.save("/server{}".format(res_img_path))
 
     return res_img_path
