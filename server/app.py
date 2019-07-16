@@ -21,9 +21,13 @@ def app_init():
 def emoji_server():
     img = request.files['upload']
     is_front = request.form.get('is_front')
+    mode = request.form.get('mode')
 
     if img is None:
         return jsonify({ 'success': False, 'res': "未接收到图片" })
+
+    if mode is None:
+        mode = "circle"
 
     img = dt.img_convert(img, is_front)
 
@@ -35,9 +39,10 @@ def emoji_server():
     if isinstance(res, str):
         return jsonify({ 'success': False, 'res': res })
     else:
-        res_img_path = sf.switch_face(res["emotions"], img)
+        res_img_path = sf.switch_face(res["emotions"], img, mode)
         res['img_path'] = res_img_path
         return jsonify({ 'success': True, 'res': res })
+
 
 @app.route('/matting', methods=['POST'])
 def matting_server():
