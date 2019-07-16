@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import json
+from flask_cors import CORS
 
 import emoji.main as emoji
 import emoji.detector as dt
@@ -7,6 +8,7 @@ import emoji.switch_face as sf
 import matting.main as matting
 
 app = Flask(__name__)
+CORS(app,  resources={r"/*": {"origins": "*"}})
 
 emoji_graph = None
 emoji_saver = None
@@ -27,7 +29,7 @@ def emoji_server():
         return jsonify({ 'success': False, 'res': "未接收到图片" })
 
     if mode is None:
-        mode = "circle"
+        mode = "cover"
 
     img = dt.img_convert(img, is_front)
 

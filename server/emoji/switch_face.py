@@ -7,10 +7,10 @@ import math
 '''
     换脸
 '''
-def switch_face(faces, src_img, mode="direct"):
+def switch_face(faces, src_img, mode="cover"):
     src_img = Image.fromarray(cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB))
 
-    if mode == "direct":
+    if mode == "cover":
         for face in faces:
             x, y, w, h = face["position"]
             emoji_img = Image.open("/images/emoji/{}.png".format(face["emotion"]))
